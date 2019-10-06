@@ -13,7 +13,7 @@ export class MissionService implements IMissionService {
     }
 
    public add(item: Mission): Promise<Mission> {
-       throw Error('Not implemented yet!')
+       return this._repo.create(item)
     }
 
     public count(query: IQuery): Promise<number> {

@@ -96,8 +96,6 @@ export class App {
         const inversifyExpress: InversifyExpressServer = new InversifyExpressServer(
             DIContainer, null, {rootPath: '/'})
 
-
-
         inversifyExpress.setConfig((app: Application) => {
 
             // for handling query strings

@@ -5,7 +5,6 @@ import {ConnectionFactoryMongodb} from '../infrastructure/database/connection.fa
 import {ConnectionMongodb} from '../infrastructure/database/connection.mongodb'
 import {IConnectionDB} from '../infrastructure/port/connection.db.interface'
 import {IConnectionFactory} from '../infrastructure/port/connection.factory.interface'
-import {BackgroundService} from '../background/background.service'
 import {App} from '../app'
 import {CustomLogger, ILogger} from '../utils/custom.logger'
 import {IEntityMapper} from '../infrastructure/port/entity.mapper.interface'
@@ -97,9 +96,6 @@ export class IoC {
         this._container
             .bind<IConnectionDB>(Identifier.MONGODB_CONNECTION)
             .to(ConnectionMongodb).inSingletonScope()
-        this._container
-            .bind(Identifier.BACKGROUND_SERVICE)
-            .to(BackgroundService).inSingletonScope()
 
         // Log
         this._container.bind<ILogger>(Identifier.LOGGER).to(CustomLogger).inSingletonScope()

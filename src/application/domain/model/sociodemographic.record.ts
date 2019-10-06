@@ -8,7 +8,6 @@ import {JsonUtils} from '../utils/json.utils'
 
 export class SociodemographicRecord implements IJSONSerializable, IJSONDeserializable<SociodemographicRecord> {
 
-
     private _adress?: Andress
     private _age?: number
     private _birth_date?: string
@@ -19,7 +18,6 @@ export class SociodemographicRecord implements IJSONSerializable, IJSONDeseriali
     private _civil_status?: CivilStatusTypes
     private _curator_name?: string
     private _telephone?: string
-
 
     get adress(): Andress | undefined {
         return this._adress

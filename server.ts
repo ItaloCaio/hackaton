@@ -4,7 +4,6 @@ import https from 'https'
 import { Application } from 'express'
 import { Identifier } from './src/di/identifiers'
 import { ILogger } from './src/utils/custom.logger'
-import { BackgroundService } from './src/background/background.service'
 import { Default } from './src/utils/default'
 import { App } from './src/app'
 import { DIContainer } from './src/di/di'
@@ -23,7 +22,6 @@ require('dotenv').config()
 
 const logger: ILogger = DIContainer.get<ILogger>(Identifier.LOGGER)
 const app: Application = (DIContainer.get<App>(Identifier.APP)).getExpress()
-const backgroundServices: BackgroundService = DIContainer.get(Identifier.BACKGROUND_SERVICE)
 const port_http = process.env.PORT_HTTP || Default.PORT_HTTP
 const port_https = process.env.PORT_HTTPS || Default.PORT_HTTPS
 const https_options = {
@@ -51,14 +49,14 @@ https.createServer(https_options, app)
         logger.debug(`Server HTTPS running on port ${port_https}`)
 
         initListener()
-        backgroundServices.startServices()
-            .then(() => {
-                logger.debug('Background services successfully initialized...')
-            })
-            .catch(err => {
-                logger.error(err.message)
-                process.exit()
-            })
+        // backgroundServices.startServices()
+        //     .then(() => {
+        //         logger.debug('Background services successfully initialized...')
+        //     })
+        //     .catch(err => {
+        //         logger.error(err.message)
+        //         process.exit()
+        //     })
     })
 
 /**
@@ -68,7 +66,7 @@ https.createServer(https_options, app)
 function initListener(): void {
     process.on('SIGINT', async () => {
         try {
-            await backgroundServices.stopServices()
+  //          await backgroundServices.stopServices()
         } catch (err) {
             logger.error(`There was an error stopping all background services. ${err.message}`)
         } finally {

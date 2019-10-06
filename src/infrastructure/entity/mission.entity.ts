@@ -4,4 +4,5 @@ export class MissionEntity {
     public hour?: string
     public activity?: string
     public details?: string
+    public type?: string
 }

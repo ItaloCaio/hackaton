@@ -1,24 +1,29 @@
 import Mongoose from 'mongoose'
 
-interface IPatientModel extends Mongoose.Document{
+interface IPatientModel extends Mongoose.Document {
 
 }
 
 const patientSchema = new Mongoose.Schema({
-    type: { type: String },
-    sociodemographic_record: {
-        name: {type: String},
-        age: {type: Number},
-        birth_date: { type: String},
-        occupation: {type: String },
-        surgical_procedure: {type: Boolean},
-        color_race: {type: String},
-        mother_scholarity: {type: String},
-        civil_status: {type: String},
-        curator_name: {type: String},
-        telephone: {type: String}
-    }
-},
+        type: { type: String },
+        name: { type: String },
+        login: { type: String },
+        password: { type: String }
+        /*
+        sociodemographic_record: {
+            name: {type: String},
+            age: {type: Number},
+            birth_date: { type: String},
+            occupation: {type: String },
+            surgical_procedure: {type: Boolean},
+            color_race: {type: String},
+            mother_scholarity: {type: String},
+            civil_status: {type: String},
+            curator_name: {type: String},
+            telephone: {type: String}
+        }
+         */
+    },
     {
         timestamps: { createdAt: 'created_at', updatedAt: false },
         toJSON: {

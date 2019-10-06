@@ -6,4 +6,8 @@ export class PatientEntity {
     public sociodemographic?: SociodemographicRecord
     public use_medication?: string
     public motor_system?: MotorSytem
+    public name?: string
+    public login?: string
+    public password?: string
+    public type?: string
 }

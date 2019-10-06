@@ -15,7 +15,7 @@ import {ILogger} from './utils/custom.logger'
 import {Strings} from './utils/strings'
 import ipAllowed = require('ip-allowed')
 import {DIContainer} from './di/di'
-import {cors} from 'cors'
+// import {cors} from 'cors'
 /**
  * Implementation of class App.
  * You must initialize all application settings,
@@ -110,15 +110,15 @@ export class App {
 
             // helps you secure your Express apps by setting various HTTP headers.
             // {@link https://www.npmjs.com/package/helmet}
-            app.use(cors({
-                origin: '*',
-                methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEADER', 'OPTIONS'],
-                allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
-                exposedHeaders: ['Content-Type', 'x-ratelimit-limit', 'x-ratelimit-remaining', 'X-Total-Count'],
-                credentials: true,
-                preflightContinue: false,
-                optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-            }))
+            // app.use(cors({
+            //     origin: '*',
+            //     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEADER', 'OPTIONS'],
+            //     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
+            //     exposedHeaders: ['Content-Type', 'x-ratelimit-limit', 'x-ratelimit-remaining', 'X-Total-Count'],
+            //     credentials: true,
+            //     preflightContinue: false,
+            //     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+            // }))
 
             app.use(helmet())
 

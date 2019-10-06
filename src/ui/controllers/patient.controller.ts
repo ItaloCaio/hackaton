@@ -23,8 +23,6 @@ export class PatientController {
     @httpPost('/')
     public async addPatient(@request() req: Request, @response() res: Response): Promise<Response> {
         try {
-            console.log(req.body)
-            console.log('post realizado')
             const patient: Patient = new Patient().fromJSON(req.body)
             const result: Patient = await this._service.add(patient)
             return res.status(HttpStatus.CREATED).send(this.toJSONView(result))
@@ -40,10 +38,7 @@ export class PatientController {
         try {
             const query: Query = new Query().fromJSON(req.query)
             const result: Array<Patient> = await this._service.getAll(query)
-            console.log(req.body)
-            console.log(result)
-            const patient: Patient = new Patient().fromJSON({name: 'Jose', password: '123', login: 'jose'})
-            return res.status(HttpStatus.OK).send(this.toJSONView(patient))
+            return res.status(HttpStatus.OK).send(this.toJSONView(result))
         } catch (err) {
             const handleError = ApiExceptionManager.build(err)
             return res.status(handleError.code).send(handleError.toJson())

@@ -75,7 +75,7 @@ export class Patient extends Entity implements IJSONSerializable, IJSONDeseriali
         if (json.id !== undefined) super.id = json.id
         if (json.name !== undefined) this.name = json.name
         if (json.login !== undefined) this.login = json.login
-        if (json.pasword !== undefined) this.password = json.pasword
+        if (json.password !== undefined) this.password = json.password
         if (json.sociodemographic !== undefined) this.sociodemographic =
             new SociodemographicRecord().fromJSON(json.sociodemographic)
         if (json.use_medication !== undefined) this.use_medication = json.use_medication

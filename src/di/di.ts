@@ -25,6 +25,9 @@ import {MissionService} from '../application/service/mission.service'
 import {IMissionRepository} from '../application/port/mission.repoisotory.interface'
 import {MissionRepository} from '../infrastructure/repository/mission.repository'
 import {MissionRepoModel} from '../infrastructure/database/schema/mission.schema'
+import { MissionEntity } from '../infrastructure/entity/mission.entity'
+import { Mission } from '../application/domain/model/mission'
+import { MissionEntityMapper } from '../infrastructure/entity/mapper/mission.entity.mapper'
 
 export class IoC {
     private readonly _container: Container
@@ -61,6 +64,7 @@ export class IoC {
         this._container.bind<HomeController>(Identifier.HOME_CONTROLLER)
             .to(HomeController).inSingletonScope()
         this._container.bind<PatientController>(Identifier.PATIENT_CONTROLLER)
+            .to(PatientController).inSingletonScope()
         this._container.bind<MissionController>(Identifier.MISSION_CONTROLLER)
             .to(MissionController).inSingletonScope()
 
@@ -88,6 +92,10 @@ export class IoC {
             .bind<IEntityMapper<Patient, PatientEntity>>
             (Identifier.PATIENT_ENTITY_MAPPER)
             .to(PatientEntityMapper).inSingletonScope()
+        this._container
+            .bind<IEntityMapper<Mission, MissionEntity>>
+            (Identifier.MISSION_ENTITY_MAPPER)
+            .to(MissionEntityMapper).inSingletonScope()
 
         // Background Services
         this._container

@@ -1,10 +1,12 @@
 import {IMissionService} from '../port/mission.service.interface'
 import {Mission} from '../domain/model/mission'
 import {IQuery} from '../port/query.interface'
-import {inject} from 'inversify'
+import { inject, injectable } from 'inversify'
 import {Identifier} from '../../di/identifiers'
 import {IMissionRepository} from '../port/mission.repoisotory.interface'
+import { ResourceTypes } from '../domain/utils/resource.types'
 
+@injectable()
 export class MissionService implements IMissionService {
     constructor(
         @inject(Identifier.MISSION_REPOSITORY)
@@ -20,7 +22,8 @@ export class MissionService implements IMissionService {
         throw Error('Not implemented yet!')    }
 
     public getAll(query: IQuery): Promise<Array<Mission>> {
-        throw Error('Not implemented yet!')    }
+        query.addFilter({ type: ResourceTypes.MISSION })
+        return this._repo.find(query)  }
 
     public getById(id: string, query: IQuery): Promise<Mission> {
         throw Error('Not implemented yet!')    }

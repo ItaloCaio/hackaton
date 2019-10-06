@@ -13,6 +13,10 @@ export class PatientEntityMapper implements IEntityMapper<Patient, PatientEntity
 
         if (!json) return result
         if (json.id !== undefined) result.id = json.id
+        if (json.name !== undefined) result.name = json.name
+        if (json.login !== undefined) result.login = json.login
+        if (json.password !== undefined) result.password = json.password
+        if (json.type !== undefined) result.type = json.type
         if (json.sociodemographic !== undefined) result.sociodemographic =
             new SociodemographicRecord().fromJSON(json.sociodemographic)
         if (json.use_medication !== undefined) result.use_medication = json.use_medication
@@ -30,6 +34,10 @@ export class PatientEntityMapper implements IEntityMapper<Patient, PatientEntity
         const result: PatientEntity = new PatientEntity()
 
         if (item.id !== undefined) result.id = item.id
+        if (item.name !== undefined) result.name = item.name
+        if (item.login !== undefined) result.login = item.login
+        if (item.password !== undefined) result.password = item.password
+        if (item.type !== undefined) result.type = item.type
         if (item.sociodemographic !== undefined) result.sociodemographic =
             item.sociodemographic.toJSON()
         if (item.use_medication !== undefined) result.use_medication = item.use_medication

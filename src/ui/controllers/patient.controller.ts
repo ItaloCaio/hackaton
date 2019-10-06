@@ -8,6 +8,8 @@ import {ApiExceptionManager} from '../exception/api.exception.manager'
 import {Query} from '../../infrastructure/repository/query/query'
 import {Patient} from '../../application/domain/model/patient'
 import {IPatientService} from '../../application/port/patient.service.interface'
+import {ApiException} from '../exception/api.exception'
+import {Strings} from '../../utils/strings'
 
 @controller('/patients')
 export class PatientController {
@@ -21,7 +23,8 @@ export class PatientController {
     @httpPost('/')
     public async addPatient(@request() req: Request, @response() res: Response): Promise<Response> {
         try {
-            console.log(res)
+            console.log(req.body)
+            console.log('post realizado')
             const patient: Patient = new Patient().fromJSON(req.body)
             const result: Patient = await this._service.add(patient)
             return res.status(HttpStatus.CREATED).send(this.toJSONView(result))
@@ -37,9 +40,23 @@ export class PatientController {
         try {
             const query: Query = new Query().fromJSON(req.query)
             const result: Array<Patient> = await this._service.getAll(query)
+            console.log(req.body)
             console.log(result)
             const patient: Patient = new Patient().fromJSON({name: 'Jose', password: '123', login: 'jose'})
             return res.status(HttpStatus.OK).send(this.toJSONView(patient))
+        } catch (err) {
+            const handleError = ApiExceptionManager.build(err)
+            return res.status(handleError.code).send(handleError.toJson())
+        }
+    }
+
+    @httpGet('/:patient_id')
+    public async getPatientById(@request() req: Request, @response() res: Response): Promise<Response> {
+        try {
+            const result: Patient = await this._service.getById(
+                req.params.patient_id, new Query().fromJSON(req.query))
+            if (!result) return res.status(HttpStatus.NOT_FOUND).send(this.getMessageNotFound())
+            return res.status(HttpStatus.OK).send(this.toJSONView(result))
         } catch (err) {
             const handleError = ApiExceptionManager.build(err)
             return res.status(handleError.code).send(handleError.toJson())
@@ -55,6 +72,14 @@ export class PatientController {
         }
         item.type = undefined
         return item.toJSON()
+    }
+
+    private getMessageNotFound(): object {
+        return new ApiException(
+            HttpStatus.NOT_FOUND,
+            Strings.PATIENT.NOT_FOUND,
+            Strings.PATIENT.NOT_FOUND_DESCRIPTION
+        ).toJson()
     }
 
 }

@@ -5,17 +5,17 @@ import bodyParser from 'body-parser'
 import HttpStatus from 'http-status-codes'
 import swaggerUi from 'swagger-ui-express'
 import qs from 'query-strings-parser'
-import express, { Application, NextFunction, Request, Response } from 'express'
-import { inject, injectable } from 'inversify'
-import { InversifyExpressServer } from 'inversify-express-utils'
-import { ApiException } from './ui/exception/api.exception'
-import { Default } from './utils/default'
-import { Identifier } from './di/identifiers'
-import { ILogger } from './utils/custom.logger'
-import { Strings } from './utils/strings'
+import express, {Application, NextFunction, Request, Response} from 'express'
+import {inject, injectable} from 'inversify'
+import {InversifyExpressServer} from 'inversify-express-utils'
+import {ApiException} from './ui/exception/api.exception'
+import {Default} from './utils/default'
+import {Identifier} from './di/identifiers'
+import {ILogger} from './utils/custom.logger'
+import {Strings} from './utils/strings'
 import ipAllowed = require('ip-allowed')
-import { DIContainer } from './di/di'
-
+import {DIContainer} from './di/di'
+import {cors} from 'cors'
 /**
  * Implementation of class App.
  * You must initialize all application settings,
@@ -68,6 +68,7 @@ export class App {
             this._logger.error(`Fatal error in middleware configuration: ${(err && err.message) ? err.message : ''}`)
         }
     }
+
     /**
      * Access control based on host addresses.
      * Only allow requests from the hosts that are on the permissions list.
@@ -93,32 +94,45 @@ export class App {
      */
     private async setupInversifyExpress(): Promise<void> {
         const inversifyExpress: InversifyExpressServer = new InversifyExpressServer(
-            DIContainer, null, { rootPath: '/' })
+            DIContainer, null, {rootPath: '/'})
+
+
 
         inversifyExpress.setConfig((app: Application) => {
+
             // for handling query strings
             // {@link https://www.npmjs.com/package/query-strings-parser}
             app.use(qs({
                 use_page: true,
                 default: {
-                    pagination: { limit: 100 },
-                    sort: { created_at: 'desc' }
+                    pagination: {limit: 100},
+                    sort: {created_at: 'desc'}
                 }
             }))
 
             // helps you secure your Express apps by setting various HTTP headers.
             // {@link https://www.npmjs.com/package/helmet}
+            app.use(cors({
+                origin: '*',
+                methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEADER', 'OPTIONS'],
+                allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
+                exposedHeaders: ['Content-Type', 'x-ratelimit-limit', 'x-ratelimit-remaining', 'X-Total-Count'],
+                credentials: true,
+                preflightContinue: false,
+                optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+            }))
+
             app.use(helmet())
 
             // create application/json parser
             // {@link https://www.npmjs.com/package/body-parser}
             app.use(bodyParser.json())
             // create application/x-www-form-urlencoded parser
-            app.use(bodyParser.urlencoded({ extended: false }))
+            app.use(bodyParser.urlencoded({extended: false}))
 
             app.use(morgan(':remote-addr :remote-user ":method :url HTTP/:http-version" ' +
                 ':status :res[content-length] :response-time ms ":referrer" ":user-agent"', {
-                    stream: { write: (str: string) => this._logger.info(str) }
+                    stream: {write: (str: string) => this._logger.info(str)}
                 }
             ))
         })

@@ -27,7 +27,9 @@ export class PatientService implements IPatientService{
     }
 
     public getById(id: string, query: IQuery): Promise<Patient> {
-        throw Error('Not implemented yet!')
+        query.addFilter({ _id: id, type: ResourceTypes.PATIENT })
+
+        return this._repo.findOne(query)
     }
 
     public remove(id: string): Promise<boolean> {
